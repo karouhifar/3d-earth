@@ -1,6 +1,17 @@
 module.exports = {
-  "plugins": ['@typescript-eslint'],
-  extends: ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'react', 'react-hooks'],
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
   rules: {
     eqeqeq: 0, // 必须使用全等
     'no-unused-vars': 1, // 不能有声明后未被使用的变量或参数

@@ -14,7 +14,7 @@ module.exports = {
     port: '8088'
   },
   // 指定入口文件
-  entry: './src/ts/index.ts',
+  entry: './src/index.tsx',
   // 指定打包文件所在目录
   output: {
     // 指定打包文件的目录
@@ -35,33 +35,21 @@ module.exports = {
     // 指定要加载的规则
     rules: [
       {
-        // test指定的是规则生效的文件
-        test: /\.ts$/,
-        // 要使用的loader
-        // Webpack在加载时是"从后向前"加载！
+        // 处理ts和tsx文件
+        test: /\.tsx?$/,
         use: [
-          // 配置babel
           {
-            // 指定加载器
             loader: 'babel-loader',
-            // 设置babel
             options: {
-              // 设置预定义的环境
               presets: [
                 [
-                  // 指定环境的插件
                   '@babel/preset-env',
-                  // 配置信息
                   {
-                    // 要兼容的目标浏览器
                     targets: {
                       chrome: '58',
                       ie: '11',
                     },
-                    // 指定corejs的版本
-                    // package.json中的版本为3.8.1
                     corejs: '3',
-                    // 使用corejs的方式，"usage" 表示按需加载
                     useBuiltIns: 'usage',
                   },
                 ],
@@ -70,17 +58,11 @@ module.exports = {
           },
           'ts-loader',
         ],
-        // 要排除的文件
         exclude: /node-modules/,
       },
       {
-        test: /\.(css|scss|sass)$/i,
-        use: ['style-loader', 'css-loader'],
-      },
-      // Shaders
-      {
-        test: /\.(glsl|vs|fs)$/,
-        loader: 'ts-shader-loader',
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       },
     ],
   },
