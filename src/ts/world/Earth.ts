@@ -117,7 +117,7 @@ export default class earth {
     this.timeValue = 100
     this.uniforms = {
       glowColor: {
-        value: new Color(0x0cd1eb),
+        value: new Color(0x14b8a6),
       },
       scale: {
         type: "f",
@@ -149,13 +149,13 @@ export default class earth {
     return new Promise(async (resolve) => {
 
       this.createEarth(); // 创建地球
-      this.createStars(); // 添加星星
+      // this.createStars(); // 添加星星
       this.createEarthGlow() // 创建地球辉光
       this.createEarthAperture() // 创建地球的大气层
-      await this.createMarkupPoint() // 创建柱状点位
-      await this.createSpriteLabel() // 创建标签
+      // await this.createMarkupPoint() // 创建柱状点位
+      // await this.createSpriteLabel() // 创建标签
       this.createAnimateCircle() // 创建环绕卫星
-      this.createFlyLine() // 创建飞线
+      // this.createFlyLine() // 创建飞线
 
       this.show()
       resolve()
@@ -284,7 +284,7 @@ export default class earth {
         },
         glowColor: {
           type: "c",
-          value: new Color(0x4390d1),
+          value: new Color(0x14b8a6),
         },
       },
       vertexShader: vertexShader,
@@ -325,88 +325,88 @@ export default class earth {
     this.earthGroup.add(mesh);
   }
 
-  async createMarkupPoint() {
+  // async createMarkupPoint() {
 
-    await Promise.all(this.options.data.map(async (item) => {
+  //   await Promise.all(this.options.data.map(async (item) => {
 
-      const radius = this.options.earth.radius;
-      const lon = item.startArray.E; //经度
-      const lat = item.startArray.N; //纬度
+  //     const radius = this.options.earth.radius;
+  //     const lon = item.startArray.E; //经度
+  //     const lat = item.startArray.N; //纬度
 
-      this.punctuationMaterial = new MeshBasicMaterial({
-        color: this.options.punctuation.circleColor,
-        map: this.options.textures.label,
-        transparent: true, //使用背景透明的png贴图，注意开启透明计算
-        depthWrite: false, //禁止写入深度缓冲区数据
-      });
+  //     this.punctuationMaterial = new MeshBasicMaterial({
+  //       color: this.options.punctuation.circleColor,
+  //       map: this.options.textures.label,
+  //       transparent: true, //使用背景透明的png贴图，注意开启透明计算
+  //       depthWrite: false, //禁止写入深度缓冲区数据
+  //     });
 
-      const mesh = createPointMesh({ radius, lon, lat, material: this.punctuationMaterial }); //光柱底座矩形平面
-      this.markupPoint.add(mesh);
-      const LightPillar = createLightPillar({
-        radius: this.options.earth.radius,
-        lon,
-        lat,
-        index: 0,
-        textures: this.options.textures,
-        punctuation: this.options.punctuation,
-      }); //光柱
-      this.markupPoint.add(LightPillar);
-      const WaveMesh = createWaveMesh({ radius, lon, lat, textures: this.options.textures }); //波动光圈
-      this.markupPoint.add(WaveMesh);
-      this.waveMeshArr.push(WaveMesh);
+  //     const mesh = createPointMesh({ radius, lon, lat, material: this.punctuationMaterial }); //光柱底座矩形平面
+  //     this.markupPoint.add(mesh);
+  //     const LightPillar = createLightPillar({
+  //       radius: this.options.earth.radius,
+  //       lon,
+  //       lat,
+  //       index: 0,
+  //       textures: this.options.textures,
+  //       punctuation: this.options.punctuation,
+  //     }); //光柱
+  //     this.markupPoint.add(LightPillar);
+  //     const WaveMesh = createWaveMesh({ radius, lon, lat, textures: this.options.textures }); //波动光圈
+  //     this.markupPoint.add(WaveMesh);
+  //     this.waveMeshArr.push(WaveMesh);
 
-      await Promise.all(item.endArray.map((obj) => {
-        const lon = obj.E; //经度
-        const lat = obj.N; //纬度
-        const mesh = createPointMesh({ radius, lon, lat, material: this.punctuationMaterial }); //光柱底座矩形平面
-        this.markupPoint.add(mesh);
-        const LightPillar = createLightPillar({
-          radius: this.options.earth.radius,
-          lon,
-          lat,
-          index: 1,
-          textures: this.options.textures,
-          punctuation: this.options.punctuation
-        }); //光柱
-        this.markupPoint.add(LightPillar);
-        const WaveMesh = createWaveMesh({ radius, lon, lat, textures: this.options.textures }); //波动光圈
-        this.markupPoint.add(WaveMesh);
-        this.waveMeshArr.push(WaveMesh);
-      }))
-      this.earthGroup.add(this.markupPoint)
-    }))
-  }
+  //     await Promise.all(item.endArray.map((obj) => {
+  //       const lon = obj.E; //经度
+  //       const lat = obj.N; //纬度
+  //       const mesh = createPointMesh({ radius, lon, lat, material: this.punctuationMaterial }); //光柱底座矩形平面
+  //       this.markupPoint.add(mesh);
+  //       const LightPillar = createLightPillar({
+  //         radius: this.options.earth.radius,
+  //         lon,
+  //         lat,
+  //         index: 1,
+  //         textures: this.options.textures,
+  //         punctuation: this.options.punctuation
+  //       }); //光柱
+  //       this.markupPoint.add(LightPillar);
+  //       const WaveMesh = createWaveMesh({ radius, lon, lat, textures: this.options.textures }); //波动光圈
+  //       this.markupPoint.add(WaveMesh);
+  //       this.waveMeshArr.push(WaveMesh);
+  //     }))
+  //     this.earthGroup.add(this.markupPoint)
+  //   }))
+  // }
 
-  async createSpriteLabel() {
-    await Promise.all(this.options.data.map(async item => {
-      let cityArry = [];
-      cityArry.push(item.startArray);
-      cityArry = cityArry.concat(...item.endArray);
-      await Promise.all(cityArry.map(async e => {
-        const p = lon2xyz(this.options.earth.radius * 1.001, e.E, e.N);
-        const div = `<div class="fire-div">${e.name}</div>`;
-        const shareContent = document.getElementById("html2canvas");
-        shareContent.innerHTML = div;
-        const opts = {
-          backgroundColor: null, // 背景透明
-          scale: 6,
-          dpi: window.devicePixelRatio,
-        };
-        const canvas = await html2canvas(document.getElementById("html2canvas"), opts)
-        const dataURL = canvas.toDataURL("image/png");
-        const map = new TextureLoader().load(dataURL);
-        const material = new SpriteMaterial({
-          map: map,
-          transparent: true,
-        });
-        const sprite = new Sprite(material);
-        const len = 5 + (e.name.length - 2) * 2;
-        sprite.scale.set(len, 3, 1);
-        sprite.position.set(p.x * 1.1, p.y * 1.1, p.z * 1.1);
-        this.earth.add(sprite);
-      }))
-    }))
-  }
+  // async createSpriteLabel() {
+  //   await Promise.all(this.options.data.map(async item => {
+  //     let cityArry = [];
+  //     cityArry.push(item.startArray);
+  //     cityArry = cityArry.concat(...item.endArray);
+  //     await Promise.all(cityArry.map(async e => {
+  //       const p = lon2xyz(this.options.earth.radius * 1.001, e.E, e.N);
+  //       const div = `<div class="fire-div">${e.name}</div>`;
+  //       const shareContent = document.getElementById("html2canvas");
+  //       shareContent.innerHTML = div;
+  //       const opts = {
+  //         backgroundColor: null, // 背景透明
+  //         scale: 6,
+  //         dpi: window.devicePixelRatio,
+  //       };
+  //       const canvas = await html2canvas(document.getElementById("html2canvas"), opts)
+  //       const dataURL = canvas.toDataURL("image/png");
+  //       const map = new TextureLoader().load(dataURL);
+  //       const material = new SpriteMaterial({
+  //         map: map,
+  //         transparent: true,
+  //       });
+  //       const sprite = new Sprite(material);
+  //       const len = 5 + (e.name.length - 2) * 2;
+  //       sprite.scale.set(len, 3, 1);
+  //       sprite.position.set(p.x * 1.1, p.y * 1.1, p.z * 1.1);
+  //       this.earth.add(sprite);
+  //     }))
+  //   }))
+  // }
 
   createAnimateCircle() {
     // 创建 圆环 点
@@ -446,26 +446,25 @@ export default class earth {
     const ball = new Mesh(
       new SphereBufferGeometry(this.options.satellite.size, 32, 32),
       new MeshBasicMaterial({
-        color: "#e0b187", // 745F4D
+        color: "#2563eb", // 745F4D
       })
     );
 
     const ball2 = new Mesh(
-      new SphereBufferGeometry(this.options.satellite.size, 32, 32),
+      new SphereBufferGeometry(this.options.satellite.size, 50, 50),
       new MeshBasicMaterial({
-        color: "#628fbb", // 324A62
+        color: "#14b8a6", // 324A62
       })
     );
 
     const ball3 = new Mesh(
       new SphereBufferGeometry(this.options.satellite.size, 32, 32),
       new MeshBasicMaterial({
-        color: "#806bdf", //6D5AC4
+        color: "#797979", //6D5AC4
       })
     );
 
     this.circleLineList.push(line, l2, l3);
-    ball.name = ball2.name = ball3.name = "卫星";
 
     for (let i = 0; i < this.options.satellite.number; i++) {
       const ball01 = ball.clone();
@@ -487,7 +486,7 @@ export default class earth {
       );
       l2.add(ball02);
 
-      const ball03 = ball2.clone();
+      const ball03 = ball3.clone();
       const num03 = Math.floor(list.length / this.options.satellite.number)
       ball03.position.set(
         list[num03 * (i + 1)][0] * 1,
@@ -498,32 +497,32 @@ export default class earth {
     }
   }
 
-  createFlyLine() {
+  // createFlyLine() {
 
-    this.flyLineArcGroup = new Group();
-    this.flyLineArcGroup.userData['flyLineArray'] = []
-    this.earthGroup.add(this.flyLineArcGroup)
+  //   this.flyLineArcGroup = new Group();
+  //   this.flyLineArcGroup.userData['flyLineArray'] = []
+  //   this.earthGroup.add(this.flyLineArcGroup)
 
-    this.options.data.forEach((cities) => {
-      cities.endArray.forEach(item => {
+  //   this.options.data.forEach((cities) => {
+  //     cities.endArray.forEach(item => {
 
-        // 调用函数flyArc绘制球面上任意两点之间飞线圆弧轨迹
-        const arcline = flyArc(
-          this.options.earth.radius,
-          cities.startArray.E,
-          cities.startArray.N,
-          item.E,
-          item.N,
-          this.options.flyLine
-        );
+  //       // 调用函数flyArc绘制球面上任意两点之间飞线圆弧轨迹
+  //       const arcline = flyArc(
+  //         this.options.earth.radius,
+  //         cities.startArray.E,
+  //         cities.startArray.N,
+  //         item.E,
+  //         item.N,
+  //         this.options.flyLine
+  //       );
 
-        this.flyLineArcGroup.add(arcline); // 飞线插入flyArcGroup中
-        this.flyLineArcGroup.userData['flyLineArray'].push(arcline.userData['flyLine'])
-      });
+  //       this.flyLineArcGroup.add(arcline); // 飞线插入flyArcGroup中
+  //       this.flyLineArcGroup.userData['flyLineArray'].push(arcline.userData['flyLine'])
+  //     });
 
-    })
+  //   })
 
-  }
+  // }
 
   show() {
     gsap.to(this.group.scale, {

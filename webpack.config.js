@@ -19,8 +19,11 @@ module.exports = {
   output: {
     // 指定打包文件的目录
     path: path.resolve(__dirname, 'dist'),
+    library: {
+      type: 'module',           // emit as an ES module
+    },
     // 打包后文件的文件
-    filename: 'bundle.js',
+    filename: 'three-app.esm.js',
     libraryTarget: 'umd',
     // 告诉webpack不使用箭头
     // 默认打包后是一个立即执行的箭头函数，在IE 11中也是无法执行的！
@@ -109,4 +112,5 @@ module.exports = {
   performance: {
     hints: false,
   },
+
 }
